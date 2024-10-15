@@ -1,0 +1,57 @@
+# name: nutrivita
+# description: "A new Flutter project."
+# publish_to: 'none'
+# version: 0.1.0
+
+# environment:
+#   sdk: ^3.5.3
+
+# dependencies:
+#   flutter:
+#     sdk: flutter
+
+# dev_dependencies:
+#   flutter_test:
+#     sdk: flutter
+#   flutter_lints: ^4.0.0
+
+# flutter:
+#   uses-material-design: true
+
+
+name: nutrivita
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.6
+  http: ^1.2.2
+  meta: ^1.12.0
+  bloc: ^8.1.4
+  translator: ^1.0.0
+  path_provider: ^2.1.4
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
+  sqflite: ^2.3.3+2
+  path: ^1.9.0
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.11
+  analyzer: ^5.13.0
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/FoodData_Central_survey_food_json_2022-10-28.json
+
