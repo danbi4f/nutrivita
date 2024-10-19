@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:nutrivita/presentation/home/widgets/all_foods_widget/all_food_item.dart';
+import 'package:nutrivita/presentation/home/widgets/ranking_nutrient_widget/ranking_nutrient_item.dart';
 import 'package:nutrivita/repository/models/food/survey_food.dart';
 
-class AllFoodsSuccessWidget extends StatelessWidget {
-  const AllFoodsSuccessWidget({
+class RankingNutrientSuccessWidget extends StatelessWidget {
+  const RankingNutrientSuccessWidget({
     super.key,
     required this.food,
-    required this.title,
+    required this.idSelected,
   });
 
   final List<SurveyFood> food;
-  final String title;
+  final int idSelected;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 24),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-        ),
         SizedBox(
           height:
               ((100 * food.length) + MediaQuery.of(context).size.width) + 24,
@@ -38,9 +28,12 @@ class AllFoodsSuccessWidget extends StatelessWidget {
                 top: 24,
               ),
               itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AllFoodItem(food: food[index]),
-              ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: RankingNutrientItem(
+                      food: food[index],
+                      idSelected: idSelected,
+                    ),
+                  ),
               itemCount: food.length),
         )
       ],

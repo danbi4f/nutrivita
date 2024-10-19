@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nutrivita/presentation/home/widgets/ranking_nutrient_widget/cubit/ranking_nutrient_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/sort_food/cubit/sort_food_cubit.dart';
 import 'package:nutrivita/repository/models/category/category_item.dart';
 
@@ -40,6 +41,7 @@ class SortFood extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(category.name), // Wyświetlana nazwa kategorii
+                            Text(category.number), 
                           ],
                         ),
                       ),
@@ -48,6 +50,11 @@ class SortFood extends StatelessWidget {
                     // Aktualizacja wybranej wartości
                     if (newValue != null) {
                       selectedCategory = newValue;
+
+                      // Wywołanie sortowania po wybraniu wartości w DropdownButton
+                      context
+                          .read<RankingNutrientCubit>()
+                          .rankingFoods(selectedCategory.id);
                     }
                   },
                 ),
