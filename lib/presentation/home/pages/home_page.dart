@@ -4,6 +4,7 @@ import 'package:nutrivita/presentation/home/pages/home_layout.dart';
 import 'package:nutrivita/presentation/home/widgets/all_foods_widget/cubit/all_foods_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/filtred_foods_widget/cubit/filtred_foods_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/my_app_bar/my_app_bar.dart';
+import 'package:nutrivita/presentation/home/widgets/my_bottom_navigation_bar/my_bottom_navigation_bar.dart';
 import 'package:nutrivita/presentation/home/widgets/ranking_nutrient_widget/cubit/ranking_nutrient_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/sort_food/cubit/sort_food_cubit.dart';
 import 'package:nutrivita/repository/food_repository.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const Drawer(),
+      bottomNavigationBar: const MyBottomNavigationBar(),
 
       //backgroundColor: Colors.amber[200],
       body: RepositoryProvider(

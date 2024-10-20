@@ -17,6 +17,7 @@ class RankingNutrientItem extends StatelessWidget {
     int? nutrientId;
     double? amount;
     String? nutrientName;
+    String? unitName;
 
     // Iterujemy po liście foodNutrients, aby znaleźć nutrient o idSelected
     for (var element in food.foodNutrients) {
@@ -24,12 +25,13 @@ class RankingNutrientItem extends StatelessWidget {
         nutrientId = element.nutrient.id;
         amount = element.amount;
         nutrientName = element.nutrient.name;
+        unitName = element.nutrient.unitName;
         break; // Znaleziono, więc przerywamy pętlę
       }
     }
 
     return Container(
-      height: 100,
+      height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context)
@@ -53,13 +55,13 @@ class RankingNutrientItem extends StatelessWidget {
                       .colorScheme
                       .onSurface, // Kolor tekstu zgodny z motywem
                 ),
-                overflow: TextOverflow.ellipsis,
+                // overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
           if (idSelected == nutrientId && amount != null && nutrientName != null)
             Positioned(
-              top: 50,
+              top: 80,
               left: 20,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,12 +73,24 @@ class RankingNutrientItem extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
-                  Text(
-                    'Amount: $amount',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Amount: $amount',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      SizedBox(width: 5,),
+                      Text(
+                        '$unitName',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

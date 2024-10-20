@@ -16,6 +16,8 @@ class RankingNutrientState extends Equatable {
     Food? food,
     Food? rankingFood,
     this.idSelected = 0,
+    this.currentPage = 1,
+    this.hasMorePages = false,
   })  : food = food ?? Food.empty,
         rankingFood = rankingFood ?? Food.empty;
 
@@ -23,6 +25,9 @@ class RankingNutrientState extends Equatable {
   final RankingNutrientStatus status;
   final Food rankingFood;
   final int idSelected;
+
+  final int currentPage; // Numer aktualnej strony
+  final bool hasMorePages; // Flaga, czy są jeszcze kolejne strony
 
   @override
   List<Object?> get props => [food, status, rankingFood];
@@ -32,12 +37,16 @@ class RankingNutrientState extends Equatable {
     RankingNutrientStatus? status,
     Food? rankingFood,
     int? idSelected,
+    int? currentPage, // Numer aktualnej strony
+    bool? hasMorePages, // Flaga, czy są jeszcze kolejne strony
   }) {
     return RankingNutrientState(
       food: food ?? this.food,
       status: status ?? this.status,
       rankingFood: rankingFood ?? this.rankingFood,
       idSelected: idSelected ?? this.idSelected,
+      currentPage: currentPage ?? this.currentPage,
+      hasMorePages: hasMorePages ?? this.hasMorePages,
     );
   }
 }

@@ -1,0 +1,12 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "nutrivita\\lib\\presentation\\home\\widgets\\ranking_nutrient_widget\\",
+            "color": "foldercolorizer.blue"
+        },
+        {
+            "folderPath": "nutrivita\\lib\\presentation\\home\\widgets\\sort_food\\",
+            "color": "foldercolorizer.blue"
+        }
+    ]
+}

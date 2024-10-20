@@ -11,6 +11,7 @@ Nutrient _$NutrientFromJson(Map<String, dynamic> json) => Nutrient(
       number: json['number'] as String,
       name: json['name'] as String,
       rank: (json['rank'] as num).toInt(),
+      unitName: json['unitName'] as String,
     );
 
 Map<String, dynamic> _$NutrientToJson(Nutrient instance) => <String, dynamic>{
@@ -18,4 +19,5 @@ Map<String, dynamic> _$NutrientToJson(Nutrient instance) => <String, dynamic>{
       'number': instance.number,
       'name': instance.name,
       'rank': instance.rank,
+      'unitName': instance.unitName,
     };

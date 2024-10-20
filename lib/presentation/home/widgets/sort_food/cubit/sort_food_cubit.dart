@@ -34,4 +34,6 @@ class SortFoodCubit extends Cubit<SortFoodState> {
       status: SortFoodStatus.selected,
     ));
   }
+
+  
 }
