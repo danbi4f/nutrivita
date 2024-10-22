@@ -1,26 +1,40 @@
 import 'package:flutter/material.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
-  const MyBottomNavigationBar({super.key});
+  const MyBottomNavigationBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  final int currentIndex;
+  final ValueChanged<int> onTap; // Callback do aktualizacji indeksu
 
   @override
   Widget build(BuildContext context) {
-    // Pobierz bieżący kolor nawigacji w zależności od motywu (jasny/ciemny)
+    // Pobieramy ColorScheme z aktualnego kontekstu motywu
     final colorScheme = Theme.of(context).colorScheme;
 
     return BottomNavigationBar(
-      backgroundColor: colorScheme.surface,
-      selectedItemColor: colorScheme.primary, // Kolor wybranej ikony
+      backgroundColor: colorScheme.surface, // Używamy koloru tła z motywu
+      selectedItemColor: colorScheme.primary, // Kolor zaznaczonego elementu
       unselectedItemColor:
-          colorScheme.onSurface.withOpacity(0.7), // Kolor nieaktywnej ikony
+          colorScheme.onSurfaceVariant, // Kolor niezaznaczonych elementów
+      selectedFontSize: 18,
+      currentIndex: currentIndex, // Używamy aktualnego indeksu
+      onTap: onTap, // Przekazujemy akcję na kliknięcie
       items: const [
         BottomNavigationBarItem(
-          label: 'Search', // Etykieta nie może być pusta
-          icon: Icon(Icons.search), // Ikona dla wyszukiwania
+          icon: Icon(
+            Icons.search,
+          ),
+          label: 'Szukaj',
         ),
         BottomNavigationBarItem(
-          label: 'Favorites', // Dodana etykieta dla innego elementu
-          icon: Icon(Icons.favorite), // Ikona dla ulubionych
+          icon: Icon(
+            Icons.star,
+          ),
+          label: 'Ulubione',
         ),
       ],
     );

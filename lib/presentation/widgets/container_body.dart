@@ -22,7 +22,7 @@ class ContainerBody extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3), // Dostosowanie cienia
+              color: Colors.white.withOpacity(0.3), // Dostosowanie cienia
               spreadRadius: 4,
               blurRadius: 6,
               offset: const Offset(0, 3), // Pozycja cienia

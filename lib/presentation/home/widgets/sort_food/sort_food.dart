@@ -29,14 +29,17 @@ class _SortFoodState extends State<SortFood> {
           children: [
             Expanded(
               child: Material(
-                elevation: 20,
+                color: Theme.of(context).colorScheme.primary,
+                elevation: 40,
                 borderRadius: BorderRadius.circular(30.0),
                 child: Stack(
                   alignment: Alignment.centerRight,
                   children: [
                     DropdownButtonFormField<CategoryNutrient>(
                       menuMaxHeight: 400,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                        
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
@@ -48,7 +51,9 @@ class _SortFoodState extends State<SortFood> {
                             value: category, // Ustawienie wartości
                             child: Row(
                               children: [
-                                Text(category.name), // Wyświetlana nazwa kategorii
+                                Text(
+                                  category.name,
+                                ), // Wyświetlana nazwa kategorii
                               ],
                             ),
                           ),
@@ -68,13 +73,20 @@ class _SortFoodState extends State<SortFood> {
                           }
                         });
                       },
-                      hint: const Text("Select a category"),
+                      hint: Text(
+                        "Select a category",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
                     ),
                     if (selectedCategory != null)
                       Positioned(
                         right: 40,
                         child: IconButton(
-                          icon: const Icon(Icons.clear),
+                          icon: Icon(
+                            Icons.clear,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
                           onPressed: () {
                             setState(() {
                               selectedCategory = null;

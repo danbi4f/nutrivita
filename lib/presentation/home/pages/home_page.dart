@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nutrivita/presentation/home/pages/favorite_page.dart';
 import 'package:nutrivita/presentation/home/pages/home_layout.dart';
-import 'package:nutrivita/presentation/home/widgets/all_foods_widget/cubit/all_foods_cubit.dart';
+import 'package:nutrivita/presentation/home/pages/widgets_page.dart';
+import 'package:nutrivita/presentation/home/widgets/favorite_foods_widget/cubit/favorite_foods_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/filtred_foods_widget/cubit/filtred_foods_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/my_app_bar/my_app_bar.dart';
 import 'package:nutrivita/presentation/home/widgets/my_bottom_navigation_bar/my_bottom_navigation_bar.dart';
@@ -13,16 +15,14 @@ import 'package:nutrivita/repository/services/food_service.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(),
-      drawer: const Drawer(),
-      bottomNavigationBar: const MyBottomNavigationBar(),
-
-      //backgroundColor: Colors.amber[200],
       body: RepositoryProvider(
-        create: (context) => FoodRepository(foodService: FoodService()),
+        create: (context) => FoodRepository(
+          foodService: FoodService(),
+        )..getDatabase(),
         child: MultiBlocProvider(
           providers: [
             BlocProvider<FiltredFoodCubit>(
@@ -34,18 +34,18 @@ class HomePage extends StatelessWidget {
                 create: (context) => SortFoodCubit(
                     foodRepository: context.read<FoodRepository>())
                   ..getCategoryNutrient()),
-            BlocProvider<AllFoodsCubit>(
-              create: (context) => AllFoodsCubit(
-                foodRepository: context.read<FoodRepository>(),
-              )..getFoods(),
-            ),
             BlocProvider<RankingNutrientCubit>(
               create: (context) => RankingNutrientCubit(
                 foodRepository: context.read<FoodRepository>(),
               )..getFoods(),
             ),
+            BlocProvider<FavoriteFoodsCubit>(
+              create: (context) => FavoriteFoodsCubit(
+                foodRepository: context.read<FoodRepository>(),
+              ),
+            ),
           ],
-          child: const HomeLayout(),
+          child: const WidgetsPage(),
         ),
       ),
     );

@@ -3,41 +3,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutrivita/repository/models/food/survey_food.dart';
 import 'package:nutrivita/presentation/home/widgets/favorite_foods_widget/cubit/favorite_foods_cubit.dart';
 
-class RankingNutrientItem extends StatelessWidget {
-  const RankingNutrientItem({
+class FavoriteFoodsItem extends StatelessWidget {
+  const FavoriteFoodsItem({
     super.key,
     required this.food,
-    required this.idSelected,
   });
 
   final SurveyFood food;
-  final int idSelected;
 
   @override
   Widget build(BuildContext context) {
-    int? nutrientId;
     double? amount;
     String? nutrientName;
     String? unitName;
 
-    // Iteracja po liście foodNutrients, aby znaleźć nutrient
-    for (var element in food.foodNutrients) {
-      if (element.nutrient.id == idSelected) {
-        nutrientId = element.nutrient.id;
-        amount = element.amount;
-        nutrientName = element.nutrient.name;
-        unitName = element.nutrient.unitName;
-        break; // Znaleziono, więc przerywamy pętlę
-      }
+    if (food.foodNutrients.isNotEmpty) {
+      amount = food.foodNutrients.first.amount;
+      nutrientName = food.foodNutrients.first.nutrient.name;
+      unitName = food.foodNutrients.first.nutrient.unitName;
     }
 
     return Container(
       height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context)
-            .colorScheme
-            .surfaceContainerHighest, // Kolor zgodny z motywem
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: Stack(
         children: [
@@ -51,16 +41,12 @@ class RankingNutrientItem extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface, // Kolor tekstu zgodny z motywem
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
           ),
-          if (idSelected == nutrientId &&
-              amount != null &&
-              nutrientName != null)
+          if (amount != null && nutrientName != null)
             Positioned(
               top: 80,
               left: 20,
@@ -96,34 +82,20 @@ class RankingNutrientItem extends StatelessWidget {
                 ],
               ),
             ),
-          // Ikona ulubionych
+          // Ikona do usuwania ulubionych
           Positioned(
             right: 20,
             top: 75,
-            child: BlocBuilder<FavoriteFoodsCubit, FavoriteFoodsState>(
-              builder: (context, state) {
-                final isFavorite = state.surveyFoodIds.contains(food.fdcId);
-                return IconButton(
-                  onPressed: () {
-                    // Dodawanie lub usuwanie ulubionych
-                    if (isFavorite) {
-                      context
-                          .read<FavoriteFoodsCubit>()
-                          .removeFavoriteFood(food.fdcId);
-                    } else {
-                      context
-                          .read<FavoriteFoodsCubit>()
-                          .addFavoriteFood(food.fdcId);
-                    }
-                  },
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite
-                        ? Colors.red
-                        : Theme.of(context).colorScheme.onSurface,
-                  ),
-                );
+            child: IconButton(
+              onPressed: () {
+                context
+                    .read<FavoriteFoodsCubit>()
+                    .removeFavoriteFood(food.fdcId);
               },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
             ),
           ),
         ],
