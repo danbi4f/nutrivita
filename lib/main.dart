@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nutrivita/presentation/home/pages/home_page.dart';
+import 'package:nutrivita/presentation/home/pages/app_base_data_page.dart';
 
 final kColorSchemeLight = ColorScheme.fromSeed(
   seedColor: Colors.green,
@@ -51,7 +51,7 @@ class MainApp extends StatelessWidget {
           .system, // Automatycznie dostosowuje się do systemowego motywu
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
-        body: HomePage(),
+        body: AppBaseDataPage(),
       ),
     );
   }

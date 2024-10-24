@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nutrivita/presentation/home/widgets/favorite_foods_widget/favorite_foods_widget.dart';
 import 'package:nutrivita/presentation/home/widgets/header_title/header_title.dart';
 import 'package:nutrivita/presentation/home/widgets/ranking_nutrient_widget/ranking_nutrient_widget.dart';
 import 'package:nutrivita/presentation/home/widgets/search_food/search_food.dart';
 import 'package:nutrivita/presentation/home/widgets/sort_food/sort_food.dart';
 import 'package:nutrivita/presentation/widgets/container_body.dart';
 
-class HomeLayout extends StatelessWidget {
-  const HomeLayout({super.key});
+class RankingNutrientLayout extends StatelessWidget {
+  const RankingNutrientLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
