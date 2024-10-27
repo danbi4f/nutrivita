@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nutrivita/presentation/home/pages/app_base_data_page.dart';
+import 'package:nutrivita/presentation/home/app_base_data_page.dart';
 
 final kColorSchemeLight = ColorScheme.fromSeed(
   seedColor: Colors.green,

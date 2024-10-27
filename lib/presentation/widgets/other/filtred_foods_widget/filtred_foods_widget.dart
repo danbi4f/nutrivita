@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutrivita/presentation/home/widgets/filtred_foods_widget/cubit/filtred_foods_cubit.dart';
-import 'package:nutrivita/presentation/home/widgets/filtred_foods_widget/filtred_foods_success_widget.dart';
+import 'package:nutrivita/presentation/widgets/other/filtred_foods_widget/cubit/filtred_foods_cubit.dart';
+import 'package:nutrivita/presentation/widgets/other/filtred_foods_widget/filtred_foods_success_widget.dart';
 
 class FiltredFoodsWidget extends StatelessWidget {
   const FiltredFoodsWidget({super.key});

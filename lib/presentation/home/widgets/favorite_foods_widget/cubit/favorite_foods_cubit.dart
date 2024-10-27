@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart'; // Import do użycia compute
 import 'package:nutrivita/repository/food_repository.dart';
 import 'package:nutrivita/repository/models/food/food.dart';
 import 'package:nutrivita/repository/models/food/survey_food.dart';
@@ -7,15 +8,13 @@ import 'package:nutrivita/repository/models/food/survey_food.dart';
 part 'favorite_foods_state.dart';
 
 class FavoriteFoodsCubit extends Cubit<FavoriteFoodsState> {
-  FavoriteFoodsCubit({
-    required this.foodRepository,
-  }) : super(const FavoriteFoodsState());
+  FavoriteFoodsCubit({required this.foodRepository}) : super(const FavoriteFoodsState());
 
   final FoodRepository foodRepository;
 
-  // Dodawanie ID do bazy danych
   Future<void> addFavoriteFood(int foodId) async {
     try {
+      emit(state.copyWith(status: FavoriteFoodsStatus.loading));
       await foodRepository.insertSurveyFoodDB(foodId);
       await loadFavoriteFoods(); // Załaduj ulubione po dodaniu
     } catch (e) {
@@ -23,9 +22,9 @@ class FavoriteFoodsCubit extends Cubit<FavoriteFoodsState> {
     }
   }
 
-  // Usuwanie ID z bazy danych
   Future<void> removeFavoriteFood(int foodId) async {
     try {
+      emit(state.copyWith(status: FavoriteFoodsStatus.loading));
       await foodRepository.removeSurveyFoodDB(foodId);
       await loadFavoriteFoods(); // Załaduj ulubione po usunięciu
     } catch (e) {
@@ -33,22 +32,16 @@ class FavoriteFoodsCubit extends Cubit<FavoriteFoodsState> {
     }
   }
 
-  // Załadowanie ulubionych produktów
   Future<void> loadFavoriteFoods() async {
     try {
       emit(state.copyWith(status: FavoriteFoodsStatus.loading));
-
-      // Pobranie ID ulubionych produktów z bazy danych
-      final List<int> favoriteFoodIds =
-          await foodRepository.getAllSurveyFoodsDB();
-
-      // Pobranie całego obiektu Food z JSON
+      
+      final List<int> favoriteFoodIds = await foodRepository.getAllSurveyFoodsDB();
       final Food foodData = await foodRepository.getFoodJson();
 
-      // Filtrowanie produktów na podstawie zapisanych ID
-      final List<SurveyFood> favoriteFoods = foodData.surveyFoods
-          .where((food) => favoriteFoodIds.contains(food.fdcId))
-          .toList();
+      // Użycie compute do przetwarzania ulubionych produktów
+      final List<SurveyFood> favoriteFoods = await compute(_filterFavoriteFoods, 
+          {'favoriteFoodIds': favoriteFoodIds, 'surveyFoods': foodData.surveyFoods});
 
       emit(state.copyWith(
         surveyFoodIds: favoriteFoodIds,
@@ -58,5 +51,14 @@ class FavoriteFoodsCubit extends Cubit<FavoriteFoodsState> {
     } catch (e) {
       emit(state.copyWith(status: FavoriteFoodsStatus.error));
     }
+  }
+
+  // Funkcja do przetwarzania ulubionych produktów w izolatorem
+  static List<SurveyFood> _filterFavoriteFoods(Map<String, dynamic> args) {
+    final List<int> favoriteFoodIds = args['favoriteFoodIds'] as List<int>;
+    final List<SurveyFood> surveyFoods = args['surveyFoods'] as List<SurveyFood>;
+
+    // Filtrowanie ulubionych produktów
+    return surveyFoods.where((food) => favoriteFoodIds.contains(food.fdcId)).toList();
   }
 }

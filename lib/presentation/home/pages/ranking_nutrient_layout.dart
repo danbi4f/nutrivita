@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nutrivita/presentation/home/widgets/header_title/header_title.dart';
+import 'package:nutrivita/presentation/widgets/header_title/header_title.dart';
 import 'package:nutrivita/presentation/home/widgets/ranking_nutrient_widget/ranking_nutrient_widget.dart';
-import 'package:nutrivita/presentation/home/widgets/search_food/search_food.dart';
+// import 'package:nutrivita/presentation/other/search_food/search_food.dart';
 import 'package:nutrivita/presentation/home/widgets/sort_food/sort_food.dart';
 import 'package:nutrivita/presentation/widgets/container_body.dart';
 
@@ -16,7 +16,7 @@ class RankingNutrientLayout extends StatelessWidget {
         children: [
           HeaderTitle(),
           SizedBox(height: 10),
-          SearchFood(),
+          // SearchFood(),
           SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10),

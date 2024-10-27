@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutrivita/presentation/home/widgets/all_foods_widget/all_foods_success_widget.dart';
-import 'package:nutrivita/presentation/home/widgets/all_foods_widget/cubit/all_foods_cubit.dart';
+import 'package:nutrivita/presentation/widgets/other/all_foods_widget/all_foods_success_widget.dart';
+import 'package:nutrivita/presentation/widgets/other/all_foods_widget/cubit/all_foods_cubit.dart';
 import 'package:nutrivita/presentation/widgets/error_widget.dart';
 
 class AllFoodsWidget extends StatelessWidget {

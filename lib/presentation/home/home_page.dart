@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nutrivita/presentation/home/pages/favorite_page.dart';
 import 'package:nutrivita/presentation/home/pages/ranking_nutrient_layout.dart';
-import 'package:nutrivita/presentation/home/widgets/my_app_bar/my_app_bar.dart';
-import 'package:nutrivita/presentation/home/widgets/my_bottom_navigation_bar/my_bottom_navigation_bar.dart';
+import 'package:nutrivita/presentation/widgets/my_app_bar/my_app_bar.dart';
+import 'package:nutrivita/presentation/widgets/my_bottom_navigation_bar/my_bottom_navigation_bar.dart';
 
 
 class HomePage extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutrivita/presentation/home/pages/home_page.dart';
+import 'package:nutrivita/presentation/home/home_page.dart';
 import 'package:nutrivita/presentation/home/widgets/favorite_foods_widget/cubit/favorite_foods_cubit.dart';
-import 'package:nutrivita/presentation/home/widgets/filtred_foods_widget/cubit/filtred_foods_cubit.dart';
+// import 'package:nutrivita/presentation/other/filtred_foods_widget/cubit/filtred_foods_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/ranking_nutrient_widget/cubit/ranking_nutrient_cubit.dart';
 import 'package:nutrivita/presentation/home/widgets/sort_food/cubit/sort_food_cubit.dart';
 import 'package:nutrivita/repository/food_repository.dart';
@@ -22,11 +22,11 @@ class AppBaseDataPage extends StatelessWidget {
           providers: [
 // _________________________________________________________________________________________________________
 
-            BlocProvider<FiltredFoodCubit>(
-              create: (context) => FiltredFoodCubit(
-                  foodRepository: context.read<FoodRepository>())
-                ..getFoods(),
-            ),
+            // BlocProvider<FiltredFoodCubit>(
+            //   create: (context) => FiltredFoodCubit(
+            //       foodRepository: context.read<FoodRepository>())
+            //     ..getFoods(),
+            // ),
 // _________________________________________________________________________________________________________
 
             BlocProvider<SortFoodCubit>(
