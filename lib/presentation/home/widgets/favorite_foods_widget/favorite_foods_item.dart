@@ -23,82 +23,94 @@ class FavoriteFoodsItem extends StatelessWidget {
       unitName = food.foodNutrients.first.nutrient.unitName;
     }
 
-    return Container(
-      height: 150,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 25,
-            left: 20,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Text(
-                food.description,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Theme.of(context).colorScheme.onSurface,
+    return BlocListener<FavoriteFoodsCubit, FavoriteFoodsState>(
+      listener: (context, state) {
+        if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          // Wyświetlenie komunikatu o sukcesie
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Jedzenie zostało usunięte!')),
+          );
+        } else if (state.status.isError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Wystąpił błąd podczas usuwania jedzenia.')),
+          );
+        }
+      },
+      child: Container(
+        height: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 25,
+              left: 20,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Text(
+                  food.description,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
             ),
-          ),
-          if (amount != null && nutrientName != null)
-            Positioned(
-              top: 80,
-              left: 20,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Nutrient: $nutrientName',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.onSurface,
+            if (amount != null && nutrientName != null)
+              Positioned(
+                top: 80,
+                left: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nutrient: $nutrientName',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Amount: $amount',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    Row(
+                      children: [
+                        Text(
+                          'Amount: $amount',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '$unitName',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        const SizedBox(width: 5),
+                        Text(
+                          '$unitName',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            Positioned(
+              right: 20,
+              top: 75,
+              child: IconButton(
+                onPressed: () {
+                  context.read<FavoriteFoodsCubit>().removeFavoriteFood(food.fdcId);
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
               ),
             ),
-          // Ikona do usuwania ulubionych
-          Positioned(
-            right: 20,
-            top: 75,
-            child: IconButton(
-              onPressed: () {
-                context
-                    .read<FavoriteFoodsCubit>()
-                    .removeFavoriteFood(food.fdcId);
-              },
-              icon: Icon(
-                Icons.delete,
-                color: Colors.red,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

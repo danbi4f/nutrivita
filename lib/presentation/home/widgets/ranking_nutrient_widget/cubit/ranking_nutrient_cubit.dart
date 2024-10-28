@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart'; // Dodano logger
 import 'package:nutrivita/repository/food_repository.dart';
 import 'package:nutrivita/repository/models/food/food.dart';
 import 'package:nutrivita/repository/models/food/survey_food.dart';
@@ -12,6 +13,7 @@ class RankingNutrientCubit extends Cubit<RankingNutrientState> {
   }) : super(const RankingNutrientState());
 
   final FoodRepository foodRepository;
+  final Logger _logger = Logger(); // Logger zamiast printów
 
   final int _itemsPerPage = 20; // Liczba elementów na stronę
   List<SurveyFood> _allRankedFoods = []; // Pełna lista posortowanych elementów
@@ -27,43 +29,41 @@ class RankingNutrientCubit extends Cubit<RankingNutrientState> {
         status: RankingNutrientStatus.success,
       ));
     } catch (error) {
-      print('Error fetching foods: $error');
+      _logger.e('Error fetching foods', error: error); // Logger zamiast print
       emit(state.copyWith(status: RankingNutrientStatus.error));
     }
   }
 
   void rankingFoods(int nutrientId) {
-    // Filtrujemy i sortujemy SurveyFoods według nutrient.id i amount
-    final rankingSurveyFoods = state.food.surveyFoods.where((food) {
-      // Sprawdzenie, czy dany SurveyFood zawiera nutrient o podanym id
-      return food.foodNutrients
-          .any((nutrient) => nutrient.nutrient.id == nutrientId);
-    }).toList()
-      // Sortowanie wyników od największej do najmniejszej wartości amount
-      ..sort((a, b) {
-        final aAmount = a.foodNutrients
-            .firstWhere((nutrient) => nutrient.nutrient.id == nutrientId)
-            .amount;
-        final bAmount = b.foodNutrients
-            .firstWhere((nutrient) => nutrient.nutrient.id == nutrientId)
-            .amount;
-        return bAmount.compareTo(aAmount);
-      });
+    emit(state.copyWith(
+      status: RankingNutrientStatus.loading,
+      currentPage: 1,
+    ));
 
-    // Zapisz pełną listę posortowanych wyników
-    _allRankedFoods = rankingSurveyFoods;
+    // Filtrujemy i sortujemy tylko wtedy, gdy nie mamy posortowanej listy
+    _allRankedFoods = state.food.surveyFoods
+        .where((food) =>
+            food.foodNutrients.any((nutrient) => nutrient.nutrient.id == nutrientId))
+        .toList();
 
-    // Emituj nowy stan z posortowaną listą
+    _allRankedFoods.sort((a, b) {
+      final aAmount = a.foodNutrients
+          .firstWhere((nutrient) => nutrient.nutrient.id == nutrientId)
+          .amount;
+      final bAmount = b.foodNutrients
+          .firstWhere((nutrient) => nutrient.nutrient.id == nutrientId)
+          .amount;
+      return bAmount.compareTo(aAmount);
+    });
+
+    // Emituj tylko pierwszą stronę
     emit(state.copyWith(
       rankingFood: Food(surveyFoods: _getPaginatedData(page: 1)),
       status: RankingNutrientStatus.ranking,
       idSelected: nutrientId,
-      currentPage: 1,
       hasMorePages: _allRankedFoods.length > _itemsPerPage,
     ));
   }
-
-// --------------------------------------------------------------------------
 
   // Funkcja do paginacji - zwraca określoną stronę wyników
   List<SurveyFood> _getPaginatedData({required int page}) {
@@ -77,20 +77,23 @@ class RankingNutrientCubit extends Cubit<RankingNutrientState> {
   }
 
   // Funkcja do ładowania kolejnej strony
-  Future<void> loadMoreFoods() async {
+  void loadMoreFoods() {
     if (state.hasMorePages) {
-      emit(state.copyWith(
-          status: RankingNutrientStatus.loading)); // Ustaw status na loading
+      emit(state.copyWith(status: RankingNutrientStatus.loading)); // Ustaw status na loading
+      
       final nextPage = state.currentPage + 1;
       final newFoods = _getPaginatedData(page: nextPage);
 
       // Sprawdź, czy są jeszcze dostępne strony
       final hasMore = _allRankedFoods.length > nextPage * _itemsPerPage;
 
+      // Dodaj nowe elementy do listy bez kopiowania całości
+      final updatedList = List<SurveyFood>.from(state.rankingFood.surveyFoods)
+        ..addAll(newFoods);
+
       // Emitujemy nowy stan z dołączonymi elementami
       emit(state.copyWith(
-        rankingFood:
-            Food(surveyFoods: [...state.rankingFood.surveyFoods, ...newFoods]),
+        rankingFood: Food(surveyFoods: updatedList),
         currentPage: nextPage,
         hasMorePages: hasMore,
         status: hasMore
@@ -102,8 +105,9 @@ class RankingNutrientCubit extends Cubit<RankingNutrientState> {
 
   // Funkcja do czyszczenia rankingu
   void clearRanking() {
+    _allRankedFoods.clear(); // Czyść pełną listę, gdy nie jest potrzebna
     emit(state.copyWith(
-      rankingFood: Food(surveyFoods: []), // Poprawa: użycie właściwego typu `Food`
+      rankingFood: Food(surveyFoods: []), // Użycie pustej listy `Food`
       idSelected: null, // Resetowanie wyboru
       status: RankingNutrientStatus.success, // Ustawienie neutralnego statusu po wyczyszczeniu
     ));

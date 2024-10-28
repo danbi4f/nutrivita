@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:isolate';
 import 'package:flutter/services.dart';
 import 'package:nutrivita/repository/models/category/category_item.dart';
 import 'package:nutrivita/repository/models/food/food.dart';
@@ -11,7 +12,8 @@ class FoodService {
 
   Future<Map<String, dynamic>> _loadJsonFromAssets(String filePath) async {
     String jsonString = await rootBundle.loadString(filePath);
-    return jsonDecode(jsonString);
+    final response = await Isolate.run(() => jsonDecode(jsonString));
+    return response;
   }
 
   Future<Food> getFoodJson() async {

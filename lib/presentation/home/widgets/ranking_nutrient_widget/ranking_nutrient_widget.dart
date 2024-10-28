@@ -11,7 +11,10 @@ class RankingNutrientWidget extends StatelessWidget {
     return BlocBuilder<RankingNutrientCubit, RankingNutrientState>(
       builder: (context, state) {
         if (state.status.isLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Padding(
+            padding:  EdgeInsets.only(top: 300.0),
+            child:  Center(child: CircularProgressIndicator()),
+          );
         } else if (state.status.isError) {
           return const Center(
               child: Text('An error occurred while loading data'));

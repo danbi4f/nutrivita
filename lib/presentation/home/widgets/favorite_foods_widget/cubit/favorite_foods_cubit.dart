@@ -16,7 +16,18 @@ class FavoriteFoodsCubit extends Cubit<FavoriteFoodsState> {
     try {
       emit(state.copyWith(status: FavoriteFoodsStatus.loading));
       await foodRepository.insertSurveyFoodDB(foodId);
-      await loadFavoriteFoods(); // Załaduj ulubione po dodaniu
+      
+      // Zaktualizowanie stanu bez ponownego ładowania danych
+      final updatedSurveyFood = List<SurveyFood>.from(state.surveyFood);
+      final Food foodData = await foodRepository.getFoodJson();
+      final newFavoriteFood = foodData.surveyFoods.firstWhere((food) => food.fdcId == foodId);
+
+      updatedSurveyFood.add(newFavoriteFood); // Dodaj nowy ulubiony produkt
+
+      emit(state.copyWith(
+        surveyFood: updatedSurveyFood,
+        status: FavoriteFoodsStatus.success,
+      ));
     } catch (e) {
       emit(state.copyWith(status: FavoriteFoodsStatus.error));
     }
@@ -26,7 +37,14 @@ class FavoriteFoodsCubit extends Cubit<FavoriteFoodsState> {
     try {
       emit(state.copyWith(status: FavoriteFoodsStatus.loading));
       await foodRepository.removeSurveyFoodDB(foodId);
-      await loadFavoriteFoods(); // Załaduj ulubione po usunięciu
+      
+      // Zaktualizowanie stanu bez ponownego ładowania danych
+      final updatedSurveyFood = state.surveyFood.where((food) => food.fdcId != foodId).toList();
+
+      emit(state.copyWith(
+        surveyFood: updatedSurveyFood,
+        status: FavoriteFoodsStatus.success,
+      ));
     } catch (e) {
       emit(state.copyWith(status: FavoriteFoodsStatus.error));
     }
