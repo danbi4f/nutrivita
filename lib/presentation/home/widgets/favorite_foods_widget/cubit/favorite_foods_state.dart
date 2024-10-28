@@ -15,11 +15,13 @@ class FavoriteFoodsState extends Equatable {
     this.status = FavoriteFoodsStatus.initial,
     this.surveyFoodIds = const [],
     this.surveyFood = const [],
+    this.loadingItemId,
   });
 
   final List<int> surveyFoodIds; 
   final FavoriteFoodsStatus status;
   final List<SurveyFood> surveyFood;
+  final int? loadingItemId;
 
   @override
   List<Object?> get props => [surveyFoodIds, status];
@@ -28,11 +30,13 @@ class FavoriteFoodsState extends Equatable {
     List<int>? surveyFoodIds,
     FavoriteFoodsStatus? status,
     List<SurveyFood>? surveyFood,
+    int? loadingItemId, 
   }) {
     return FavoriteFoodsState(
       surveyFoodIds: surveyFoodIds ?? this.surveyFoodIds,
       status: status ?? this.status,
       surveyFood: surveyFood ?? this.surveyFood,
+      loadingItemId: loadingItemId,
     );
   }
 }

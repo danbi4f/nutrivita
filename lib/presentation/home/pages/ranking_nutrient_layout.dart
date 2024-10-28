@@ -16,7 +16,7 @@ class RankingNutrientLayout extends StatelessWidget {
         children: [
           HeaderTitle(),
           SizedBox(height: 10),
-          SearchFood(),
+          // SearchFood(),
           SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10),

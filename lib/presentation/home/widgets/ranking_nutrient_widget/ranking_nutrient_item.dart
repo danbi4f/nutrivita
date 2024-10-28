@@ -103,19 +103,33 @@ class RankingNutrientItem extends StatelessWidget {
             child: BlocBuilder<FavoriteFoodsCubit, FavoriteFoodsState>(
               builder: (context, state) {
                 final isFavorite = state.surveyFoodIds.contains(food.fdcId);
+                final isLoading = state.loadingItemId ==
+                    food.fdcId; // Sprawdzenie, czy dany element jest w stanie ładowania
+
+                // Sprawdzenie, czy status to loading
+                if (isLoading) {
+                  return const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  );
+                }
+
                 return IconButton(
                   onPressed: () {
-                    // Dodawanie lub usuwanie ulubionych
-                    if (isFavorite) {
-                      context
-                          .read<FavoriteFoodsCubit>()
-                          .removeFavoriteFood(food.fdcId);
-                    } else {
-                      context
-                          .read<FavoriteFoodsCubit>()
-                          .addFavoriteFood(food.fdcId);
+                    if (!isLoading) {
+                      // Sprawdzanie czy przycisk nie jest w stanie ładowania
+                      if (isFavorite) {
+                        context
+                            .read<FavoriteFoodsCubit>()
+                            .removeFavoriteFood(food.fdcId);
+                      } else {
+                        context
+                            .read<FavoriteFoodsCubit>()
+                            .addFavoriteFood(food.fdcId);
+                      }
                     }
-                  },
+                  }, 
                   icon: Icon(
                     isFavorite ? Icons.favorite : Icons.favorite_border,
                     color: isFavorite

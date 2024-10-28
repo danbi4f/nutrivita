@@ -16,20 +16,30 @@ class FavoriteFoodsCubit extends Cubit<FavoriteFoodsState> {
   // Dodawanie ID do bazy danych
   Future<void> addFavoriteFood(int foodId) async {
     try {
+      emit(state.copyWith(
+          status: FavoriteFoodsStatus.loading, loadingItemId: foodId));
       await foodRepository.insertSurveyFoodDB(foodId);
       await loadFavoriteFoods(); // Załaduj ulubione po dodaniu
     } catch (e) {
-      emit(state.copyWith(status: FavoriteFoodsStatus.error));
+      emit(state.copyWith(
+          status: FavoriteFoodsStatus.error, loadingItemId: null));
+    } finally {
+      emit(state.copyWith(loadingItemId: null)); // Reset loadingItemId
     }
   }
 
   // Usuwanie ID z bazy danych
   Future<void> removeFavoriteFood(int foodId) async {
     try {
+      emit(state.copyWith(
+          status: FavoriteFoodsStatus.loading, loadingItemId: foodId));
       await foodRepository.removeSurveyFoodDB(foodId);
       await loadFavoriteFoods(); // Załaduj ulubione po usunięciu
     } catch (e) {
-      emit(state.copyWith(status: FavoriteFoodsStatus.error));
+      emit(state.copyWith(
+          status: FavoriteFoodsStatus.error, loadingItemId: null));
+    } finally {
+      emit(state.copyWith(loadingItemId: null)); // Reset loadingItemId
     }
   }
 
